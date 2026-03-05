@@ -16,6 +16,16 @@
         "types": "./dist/index.d.cts",
         "default": "./dist/index.cjs"
       }
+    },
+    "./blockchain": {
+      "import": {
+        "types": "./dist/blockchain/index.d.ts",
+        "default": "./dist/blockchain/index.js"
+      },
+      "require": {
+        "types": "./dist/blockchain/index.d.cts",
+        "default": "./dist/blockchain/index.cjs"
+      }
     }
   },
   "files": [
@@ -34,14 +44,40 @@
     "test:coverage": "vitest run --coverage",
     "lint": "tsc --noEmit",
     "playground": "node --env-file=playground/.env --import tsx playground/test-sdk.ts",
+    "playground:blockchain": "node --env-file=playground/.env --import tsx playground/test-blockchain.ts",
     "prepublishOnly": "pnpm build"
+  },
+  "peerDependencies": {
+    "@zerodev/ecdsa-validator": "^5.0.0",
+    "@zerodev/permissions": "^5.0.0",
+    "@zerodev/sdk": "^5.0.0",
+    "viem": "^2.0.0"
+  },
+  "peerDependenciesMeta": {
+    "viem": {
+      "optional": true
+    },
+    "@zerodev/sdk": {
+      "optional": true
+    },
+    "@zerodev/permissions": {
+      "optional": true
+    },
+    "@zerodev/ecdsa-validator": {
+      "optional": true
+    }
   },
   "devDependencies": {
     "@types/node": "^25.3.3",
     "@vitest/coverage-v8": "^3.0.0",
+    "@zerodev/ecdsa-validator": "^5.4.9",
+    "@zerodev/permissions": "^5.6.3",
+    "@zerodev/sdk": "^5.5.7",
+    "tslib": "^2.8.1",
     "tsup": "^8.0.0",
     "tsx": "^4.21.0",
     "typescript": "^5.7.0",
+    "viem": "^2.47.0",
     "vitest": "^3.0.0"
   },
   "keywords": [
@@ -49,7 +85,8 @@
     "sdk",
     "stablecoin",
     "payments",
-    "api"
+    "api",
+    "blockchain"
   ],
   "license": "MIT"
 }
