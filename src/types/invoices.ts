@@ -38,6 +38,17 @@ export interface Invoice {
   on_chain_id?: string;
 }
 
+export interface CreateInvoiceZerodevResponse {
+  public_id: string;
+  contract_address: string;
+  abi_function_signature: string;
+  abi_parameters: {
+    encrypted_owner: [string, number, number, string];
+    encrypted_amount: [string, number, number, string];
+    resolver: string;
+  };
+}
+
 export interface ListInvoicesParams {
   limit?: number;
   offset?: number;

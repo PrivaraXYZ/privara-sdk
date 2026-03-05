@@ -15,6 +15,7 @@ export type {
   InvoiceStatus,
   CreateInvoiceParams,
   CreateInvoiceResponse,
+  CreateInvoiceZerodevResponse,
   Invoice,
   ListInvoicesParams,
 } from './types/invoices.js';
