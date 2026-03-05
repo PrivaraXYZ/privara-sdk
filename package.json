@@ -1,0 +1,54 @@
+{
+  "name": "@privara/sdk",
+  "version": "0.1.0",
+  "description": "TypeScript SDK for the Privara API",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "scripts": {
+    "prepare": "git config core.hooksPath .githooks",
+    "build": "tsup",
+    "build:tsc": "tsc",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "lint": "tsc --noEmit",
+    "playground": "node --env-file=playground/.env --import tsx playground/test-sdk.ts",
+    "prepublishOnly": "pnpm build"
+  },
+  "devDependencies": {
+    "@vitest/coverage-v8": "^3.0.0",
+    "tsup": "^8.0.0",
+    "tsx": "^4.21.0",
+    "typescript": "^5.7.0",
+    "vitest": "^3.0.0"
+  },
+  "keywords": [
+    "privara",
+    "sdk",
+    "stablecoin",
+    "payments",
+    "api"
+  ],
+  "license": "MIT"
+}

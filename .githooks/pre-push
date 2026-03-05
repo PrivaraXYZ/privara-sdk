@@ -1,0 +1,9 @@
+#!/bin/sh
+echo "→ typecheck"
+pnpm typecheck || exit 1
+
+echo "→ test"
+pnpm test || exit 1
+
+echo "→ build"
+pnpm build || exit 1
