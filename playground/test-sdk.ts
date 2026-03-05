@@ -32,26 +32,9 @@ async function section(name: string, fn: () => Promise<void>) {
   }
 }
 
-await section('OAuth Token (implicit via first request)', async () => {
-  console.log('  Token will be fetched automatically on first API call...');
-});
-
-await section('GET /users/me', async () => {
-  const user = await privara.users.me();
-  console.log('  User:', JSON.stringify(user, null, 2));
-});
-
 await section('GET /balance', async () => {
   const balance = await privara.balance.get();
   console.log('  Balance:', JSON.stringify(balance, null, 2));
-});
-
-await section('GET /credentials', async () => {
-  const creds = await privara.credentials.list();
-  console.log(`  Credentials: ${creds.items.length} found`);
-  for (const c of creds.items) {
-    console.log(`    - ${c.client_id} [${c.status}] created: ${c.created_at}`);
-  }
 });
 
 await section('GET /invoices (first page)', async () => {
