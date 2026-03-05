@@ -108,6 +108,30 @@ await privara.transactions.report({
 });
 ```
 
+## Blockchain (on-chain invoices)
+
+The SDK provides a separate entry point for on-chain invoice operations via ZeroDev account abstraction. See the full guide: **[docs/blockchain.md](docs/blockchain.md)**
+
+Quick start:
+
+```ts
+import {Privara} from '@privara/sdk';
+import {PrivaraBlockchain} from '@privara/sdk/blockchain';
+
+const privara = new Privara({clientId: 'pvr_...', clientSecret: 'pvrs_...'});
+const blockchain = new PrivaraBlockchain(privara, {serializedSessionKey: '...'});
+
+const result = await blockchain.invoices.createAndSubmit({
+    from: 'alice@example.com',
+    due_date: '2025-12-31',
+    reference: 'Order #1234',
+    amount: 100,
+    currency: {type: 'crypto', code: 'USDC'},
+});
+```
+
+Requires additional peer dependencies: `viem`, `@zerodev/sdk`, `@zerodev/permissions`.
+
 ## Auto-pagination
 
 List endpoints that return paginated data support automatic iteration via `listAutoPaginate()`. This returns an

@@ -62,4 +62,29 @@ await section('GET /withdrawals (first page)', async () => {
   }
 });
 
+// ── Blockchain flow (requires PRIVARA_SERIALIZED_SESSION_KEY env var) ──────────
+const serializedSessionKey = process.env.PRIVARA_SERIALIZED_SESSION_KEY;
+
+if (serializedSessionKey) {
+  const { PrivaraBlockchain } = await import('../src/blockchain/index.js');
+
+  const blockchain = new PrivaraBlockchain(privara, {
+    serializedSessionKey,
+  });
+
+  await section('Blockchain: createAndSubmit invoice', async () => {
+    const result = await blockchain.invoices.createAndSubmit({
+      from: 'test@example.com',
+      due_date: '2025-12-31',
+      reference: 'SDK Playground Test',
+      amount: 1,
+      currency: { type: 'crypto', code: 'USDC' },
+      wallet_id: 'playground',
+    });
+    console.log('  Result:', JSON.stringify(result, null, 2));
+  });
+} else {
+  console.log('\n  Skipping blockchain tests (set PRIVARA_SERIALIZED_SESSION_KEY to enable)');
+}
+
 console.log('\n✓ Done\n');
