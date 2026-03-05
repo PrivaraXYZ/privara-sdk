@@ -11,8 +11,6 @@ export { PrivaraConnectionError } from './errors/connection-error.js';
 
 export type { Currency, ProblemJson, RequestOptions } from './types/common.js';
 export type { OffsetPage, CursorPage } from './types/pagination.js';
-export type { User, Wallet, UserStatusResponse } from './types/users.js';
-export type { BusinessType, CreateBusinessProfileParams, CreateBusinessProfileResponse } from './types/business-profiles.js';
 export type {
   InvoiceStatus,
   CreateInvoiceParams,
@@ -31,8 +29,6 @@ export type {
   BridgeChallengeResponse,
 } from './types/withdrawals.js';
 export type { ReportTransactionParams, ReportTransactionResponse } from './types/transactions.js';
-export type { GenerateCredentialsResponse, Credential, ListCredentialsResponse } from './types/credentials.js';
-export type { CreateExecutorWalletParams, ExecutorWallet } from './types/executor-wallets.js';
 
 export { toArray } from './core/pagination.js';
 

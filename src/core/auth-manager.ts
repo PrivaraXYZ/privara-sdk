@@ -12,7 +12,7 @@ const REFRESH_MARGIN_MS = 60_000;
 
 export class AuthManager {
   private credentials: OAuthCredentials;
-  private baseUrl: string;
+  private readonly baseUrl: string;
   private token: TokenData | null = null;
   private refreshPromise: Promise<string> | null = null;
 
