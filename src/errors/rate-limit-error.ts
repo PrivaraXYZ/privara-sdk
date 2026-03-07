@@ -1,5 +1,5 @@
-import { PrivaraApiError } from './api-error.js';
 import type { ProblemJson } from '../types/common.js';
+import { PrivaraApiError } from './api-error.js';
 
 export class PrivaraRateLimitError extends PrivaraApiError {
   readonly retryAfter: number | undefined;

@@ -1,21 +1,13 @@
 import type { HttpClient } from '../core/http-client.js';
-import type { RequestOptions } from '../types/common.js';
-import type { OffsetPage } from '../types/pagination.js';
-import type {
-  CreateInvoiceParams,
-  CreateInvoiceResponse,
-  Invoice,
-  ListInvoicesParams,
-} from '../types/invoices.js';
 import { generateIdempotencyKey } from '../core/idempotency.js';
+import type { RequestOptions } from '../types/common.js';
+import type { CreateInvoiceParams, CreateInvoiceResponse, Invoice, ListInvoicesParams } from '../types/invoices.js';
+import type { OffsetPage } from '../types/pagination.js';
 
 export class Invoices {
   constructor(private client: HttpClient) {}
 
-  async create(
-    params: CreateInvoiceParams,
-    options?: RequestOptions,
-  ): Promise<CreateInvoiceResponse> {
+  async create(params: CreateInvoiceParams, options?: RequestOptions): Promise<CreateInvoiceResponse> {
     return this.client.request('POST', '/api/v1/invoices', {
       body: params,
       requestOptions: {
@@ -32,10 +24,7 @@ export class Invoices {
     });
   }
 
-  async list(
-    params?: ListInvoicesParams,
-    options?: RequestOptions,
-  ): Promise<OffsetPage<Invoice>> {
+  async list(params?: ListInvoicesParams, options?: RequestOptions): Promise<OffsetPage<Invoice>> {
     return this.client.request('GET', '/api/v1/invoices', {
       query: {
         limit: params?.limit,

@@ -5,10 +5,7 @@ import type { ReportTransactionParams, ReportTransactionResponse } from '../type
 export class Transactions {
   constructor(private client: HttpClient) {}
 
-  async report(
-    params: ReportTransactionParams,
-    options?: RequestOptions,
-  ): Promise<ReportTransactionResponse> {
+  async report(params: ReportTransactionParams, options?: RequestOptions): Promise<ReportTransactionResponse> {
     return this.client.request('POST', '/api/v1/transactions/report', {
       body: params,
       requestOptions: options,

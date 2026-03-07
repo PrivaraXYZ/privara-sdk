@@ -35,14 +35,16 @@
     "node": ">=18.0.0"
   },
   "scripts": {
-    "prepare": "git config core.hooksPath .githooks",
+    "prepare": "husky",
     "build": "tsup",
     "build:tsc": "tsc",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
-    "lint": "tsc --noEmit",
+    "lint": "biome check",
+    "lint:fix": "biome check --write",
+    "format": "biome format --write",
     "playground": "node --env-file=playground/.env --import tsx playground/test-sdk.ts",
     "playground:blockchain": "node --env-file=playground/.env --import tsx playground/test-blockchain.ts",
     "prepublishOnly": "pnpm build"
@@ -68,11 +70,14 @@
     }
   },
   "devDependencies": {
+    "@biomejs/biome": "^2.4.6",
     "@types/node": "^25.3.3",
     "@vitest/coverage-v8": "^3.0.0",
     "@zerodev/ecdsa-validator": "^5.4.9",
     "@zerodev/permissions": "^5.6.3",
     "@zerodev/sdk": "^5.5.7",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.3.2",
     "tslib": "^2.8.1",
     "tsup": "^8.0.0",
     "tsx": "^4.21.0",
@@ -88,5 +93,8 @@
     "api",
     "blockchain"
   ],
+  "lint-staged": {
+    "*.{ts,json}": "biome check --write --no-errors-on-unmatched"
+  },
   "license": "MIT"
 }

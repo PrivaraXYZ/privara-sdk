@@ -1,14 +1,13 @@
-import type { Hex } from 'viem';
 import type { KernelAccountClient } from '@zerodev/sdk';
+import type { Hex } from 'viem';
 import type { Privara } from '../client.js';
-import type { CreateInvoiceParams } from '../types/invoices.js';
-import type { CreateInvoiceZerodevResponse } from '../types/invoices.js';
-import type { BlockchainConfig, CreateAndSubmitResult } from './types.js';
+import type { CreateInvoiceParams, CreateInvoiceZerodevResponse } from '../types/invoices.js';
 import { encodeInvoiceCallData } from './calldata-encoder.js';
 import { createKernelClientFromSessionKey } from './kernel-client-factory.js';
+import type { BlockchainConfig, CreateAndSubmitResult } from './types.js';
 
 export class PrivaraBlockchain {
-  private readonly privara: Privara;
+  readonly privara: Privara;
   private readonly config: BlockchainConfig;
   private kernelClientPromise: Promise<KernelAccountClient> | null = null;
 
@@ -27,9 +26,7 @@ export class PrivaraBlockchain {
     return this.kernelClientPromise;
   }
 
-  async sendInvoiceTransaction(
-    invoice: CreateInvoiceZerodevResponse,
-  ): Promise<Hex> {
+  async sendInvoiceTransaction(invoice: CreateInvoiceZerodevResponse): Promise<Hex> {
     const kernelClient = await this.getKernelClient();
     const calldata = encodeInvoiceCallData(invoice);
 
@@ -56,11 +53,9 @@ export class PrivaraBlockchain {
 class BlockchainInvoices {
   constructor(private blockchain: PrivaraBlockchain) {}
 
-  async createAndSubmit(
-    params: CreateInvoiceParams,
-  ): Promise<CreateAndSubmitResult> {
-    const privara = this.blockchain['privara'];
-    const invoice = await privara.invoices.create(params) as unknown as CreateInvoiceZerodevResponse;
+  async createAndSubmit(params: CreateInvoiceParams): Promise<CreateAndSubmitResult> {
+    const privara = this.blockchain.privara;
+    const invoice = (await privara.invoices.create(params)) as unknown as CreateInvoiceZerodevResponse;
     const txHash = await this.blockchain.sendInvoiceTransaction(invoice);
 
     await privara.transactions.report({
