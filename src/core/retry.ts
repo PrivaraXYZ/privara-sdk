@@ -34,16 +34,13 @@ export function getRetryDelay(attempt: number, config: RetryConfig, error?: unkn
     }
   }
 
-  const base = config.initialDelayMs * Math.pow(config.backoffMultiplier, attempt);
+  const base = config.initialDelayMs * config.backoffMultiplier ** attempt;
   const capped = Math.min(base, config.maxDelayMs);
   const jitter = capped * config.jitterFraction * (Math.random() * 2 - 1);
   return Math.max(0, capped + jitter);
 }
 
-export async function withRetry<T>(
-  fn: () => Promise<T>,
-  config: RetryConfig = DEFAULT_RETRY_CONFIG,
-): Promise<T> {
+export async function withRetry<T>(fn: () => Promise<T>, config: RetryConfig = DEFAULT_RETRY_CONFIG): Promise<T> {
   let lastError: unknown;
 
   for (let attempt = 0; attempt <= config.maxRetries; attempt++) {
@@ -55,7 +52,7 @@ export async function withRetry<T>(
         throw error;
       }
       const delay = getRetryDelay(attempt, config, error);
-      await new Promise((resolve) => setTimeout(resolve, delay));
+      await new Promise(resolve => setTimeout(resolve, delay));
     }
   }
 

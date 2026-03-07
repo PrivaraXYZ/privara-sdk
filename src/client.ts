@@ -1,10 +1,10 @@
-import { HttpClient, type RequestInterceptor, type ResponseInterceptor } from './core/http-client.js';
 import { AuthManager } from './core/auth-manager.js';
+import { HttpClient, type RequestInterceptor, type ResponseInterceptor } from './core/http-client.js';
 import { DEFAULT_RETRY_CONFIG, type RetryConfig } from './core/retry.js';
-import { Invoices } from './resources/invoices.js';
 import { BalanceResource } from './resources/balance.js';
-import { Withdrawals } from './resources/withdrawals.js';
+import { Invoices } from './resources/invoices.js';
 import { Transactions } from './resources/transactions.js';
+import { Withdrawals } from './resources/withdrawals.js';
 
 const DEFAULT_BASE_URL = 'https://api.privara.io';
 const DEFAULT_TIMEOUT = 30_000;
@@ -31,10 +31,7 @@ export class Privara {
 
     let authManager: AuthManager | undefined;
     if (config.clientId && config.clientSecret) {
-      authManager = new AuthManager(
-        { clientId: config.clientId, clientSecret: config.clientSecret },
-        baseUrl,
-      );
+      authManager = new AuthManager({ clientId: config.clientId, clientSecret: config.clientSecret }, baseUrl);
     } else if (!config.accessToken && !config.clientId) {
       throw new Error('Provide either accessToken or clientId/clientSecret.');
     }
