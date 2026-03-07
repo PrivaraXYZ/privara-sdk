@@ -1,5 +1,5 @@
-import { PrivaraError } from './privara-error.js';
 import type { ProblemJson } from '../types/common.js';
+import { PrivaraError } from './privara-error.js';
 
 export class PrivaraApiError extends PrivaraError {
   readonly status: number;
@@ -8,11 +8,7 @@ export class PrivaraApiError extends PrivaraError {
   readonly detail: string | undefined;
   readonly headers: Headers;
 
-  constructor(
-    status: number,
-    body: ProblemJson,
-    headers: Headers,
-  ) {
+  constructor(status: number, body: ProblemJson, headers: Headers) {
     super(body.detail ?? body.title);
     this.name = 'PrivaraApiError';
     this.status = status;
@@ -25,7 +21,7 @@ export class PrivaraApiError extends PrivaraError {
   static async fromResponse(response: Response): Promise<PrivaraApiError> {
     let body: ProblemJson;
     try {
-      body = await response.json() as ProblemJson;
+      body = (await response.json()) as ProblemJson;
     } catch {
       body = {
         type: 'about:blank',

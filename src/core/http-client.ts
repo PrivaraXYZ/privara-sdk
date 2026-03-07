@@ -1,8 +1,8 @@
 import { PrivaraApiError } from '../errors/api-error.js';
 import { PrivaraConnectionError } from '../errors/connection-error.js';
-import { withRetry, type RetryConfig, DEFAULT_RETRY_CONFIG } from './retry.js';
-import type { AuthManager } from './auth-manager.js';
 import type { RequestOptions } from '../types/common.js';
+import type { AuthManager } from './auth-manager.js';
+import { type RetryConfig, withRetry } from './retry.js';
 
 export interface HttpClientConfig {
   baseUrl: string;
@@ -12,13 +12,9 @@ export interface HttpClientConfig {
   retryConfig: RetryConfig;
 }
 
-export interface RequestInterceptor {
-  (request: InterceptedRequest): InterceptedRequest | Promise<InterceptedRequest>;
-}
+export type RequestInterceptor = (request: InterceptedRequest) => InterceptedRequest | Promise<InterceptedRequest>;
 
-export interface ResponseInterceptor {
-  (response: Response): Response | Promise<Response>;
-}
+export type ResponseInterceptor = (response: Response) => Response | Promise<Response>;
 
 export interface InterceptedRequest {
   method: string;
@@ -63,7 +59,7 @@ export class HttpClient {
       const auth = options?.auth ?? true;
       if (auth) {
         const token = await this.resolveToken();
-        headers['Authorization'] = `Bearer ${token}`;
+        headers.Authorization = `Bearer ${token}`;
       }
 
       if (options?.requestOptions?.idempotencyKey) {
@@ -132,7 +128,7 @@ export class HttpClient {
         return undefined as T;
       }
 
-      return await response.json() as T;
+      return (await response.json()) as T;
     }, this.config.retryConfig);
   }
 

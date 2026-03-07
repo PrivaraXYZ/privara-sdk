@@ -57,7 +57,7 @@ export class AuthManager {
       throw new Error(`OAuth token request failed: ${response.status} ${body.title ?? body.detail ?? ''}`);
     }
 
-    const data = await response.json() as {
+    const data = (await response.json()) as {
       access_token: string;
       expires_in: number;
     };

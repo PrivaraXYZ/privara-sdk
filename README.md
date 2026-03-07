@@ -1,6 +1,6 @@
 # Privara SDK for TypeScript
 
-TypeScript SDK for the [Privara API](https://docs.privara.io) — confidential stablecoin payments on compliant rails.
+TypeScript SDK for the [Privara](https://app.privara.dev) — confidential stablecoin payments on compliant rails.
 
 ## Installation
 

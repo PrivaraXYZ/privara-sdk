@@ -1,4 +1,4 @@
-import { encodeFunctionData, parseAbiItem, type Hex } from 'viem';
+import { encodeFunctionData, type Hex, parseAbiItem } from 'viem';
 import type { CreateInvoiceZerodevResponse } from '../types/invoices.js';
 
 export function encodeInvoiceCallData(invoice: CreateInvoiceZerodevResponse): Hex {

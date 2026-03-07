@@ -1,6 +1,6 @@
 import type { HttpClient } from '../core/http-client.js';
-import type { RequestOptions } from '../types/common.js';
 import type { Balance } from '../types/balance.js';
+import type { RequestOptions } from '../types/common.js';
 
 export class BalanceResource {
   constructor(private client: HttpClient) {}
