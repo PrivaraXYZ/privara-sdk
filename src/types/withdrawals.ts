@@ -1,11 +1,6 @@
 export type DestinationChain = 'BASE' | 'ETH' | 'POLYGON';
 
-export type WithdrawalStatus =
-  | 'PENDING_REDEEM'
-  | 'PENDING_BRIDGE'
-  | 'BRIDGING'
-  | 'COMPLETED'
-  | 'FAILED';
+export type WithdrawalStatus = 'PENDING_REDEEM' | 'PENDING_BRIDGE' | 'BRIDGING' | 'COMPLETED' | 'FAILED';
 
 export interface CreateWithdrawalParams {
   invoice_ids: number[];

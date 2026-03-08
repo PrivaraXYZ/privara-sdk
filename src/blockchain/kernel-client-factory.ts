@@ -1,13 +1,13 @@
-import { createPublicClient, http } from 'viem';
-import { arbitrumSepolia } from 'viem/chains';
-import { entryPoint07Address } from 'viem/account-abstraction';
+import { deserializePermissionAccount } from '@zerodev/permissions';
 import {
+  constants,
   createKernelAccountClient,
   createZeroDevPaymasterClient,
-  constants,
   type KernelAccountClient,
 } from '@zerodev/sdk';
-import { deserializePermissionAccount } from '@zerodev/permissions';
+import { createPublicClient, http } from 'viem';
+import { entryPoint07Address } from 'viem/account-abstraction';
+import { arbitrumSepolia } from 'viem/chains';
 import type { BlockchainConfig } from './types.js';
 
 const DEFAULT_ZERODEV_PROJECT_ID = '94a91379-17e9-4e81-acc8-ce2aca6f299a';
@@ -22,9 +22,7 @@ function buildBundlerUrl(projectId: string, chainId = ARBITRUM_SEPOLIA_CHAIN_ID)
   return `https://rpc.zerodev.app/api/v3/${projectId}/chain/${chainId}`;
 }
 
-export async function createKernelClientFromSessionKey(
-  config: BlockchainConfig,
-): Promise<KernelAccountClient> {
+export async function createKernelClientFromSessionKey(config: BlockchainConfig): Promise<KernelAccountClient> {
   const chain = arbitrumSepolia;
   const rpcUrl = config.rpcUrl ?? DEFAULT_RPC_URL;
   const projectId = config.zerodevProjectId ?? DEFAULT_ZERODEV_PROJECT_ID;
