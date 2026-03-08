@@ -96,5 +96,14 @@
   "lint-staged": {
     "*.{ts,json}": "biome check --write --no-errors-on-unmatched"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/PrivaraXYZ/privara-sdk.git"
+  },
+  "homepage": "https://github.com/PrivaraXYZ/privara-sdk#readme",
+  "bugs": {
+    "url": "https://github.com/PrivaraXYZ/privara-sdk/issues"
+  },
+  "packageManager": "pnpm@10.30.3",
   "license": "MIT"
 }
