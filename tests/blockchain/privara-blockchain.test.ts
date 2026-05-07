@@ -251,6 +251,57 @@ describe('PrivaraBlockchain', () => {
           entity_id: mockInvoiceResponse.public_id,
         });
       });
+
+      it('passes signer_address to backend in signer mode', async () => {
+        const privara = createMockPrivara();
+        const blockchain = new PrivaraBlockchain(privara as any, signerConfig);
+
+        await blockchain.invoices.createAndSubmit({
+          from: 'test@test.com',
+          due_date: '2025-12-31',
+          reference: 'Test',
+          amount: 100,
+          currency: { type: 'crypto', code: 'USDC' },
+          wallet_id: 'w_1',
+        });
+
+        expect(privara.invoices.create).toHaveBeenCalledWith(
+          expect.objectContaining({
+            signer_address: signerConfig.signer.address,
+          }),
+        );
+      });
+    });
+  });
+
+  describe('legacy mode does not send signer_address', () => {
+    it('omits signer_address in createAndSubmit payload', async () => {
+      const privara = createMockPrivara();
+      const blockchain = new PrivaraBlockchain(privara as any, sessionKeyConfig);
+
+      await blockchain.invoices.createAndSubmit({
+        from: 'test@test.com',
+        due_date: '2025-12-31',
+        reference: 'Test',
+        amount: 100,
+        currency: { type: 'crypto', code: 'USDC' },
+        wallet_id: 'w_1',
+      });
+
+      const sentParams = (privara.invoices.create as any).mock.calls[0][0];
+      expect(sentParams.signer_address).toBeUndefined();
+    });
+  });
+
+  describe('getSignerAddress', () => {
+    it('returns signer address in signer mode', () => {
+      const blockchain = new PrivaraBlockchain(createMockPrivara() as any, signerConfig);
+      expect(blockchain.getSignerAddress()).toBe(signerConfig.signer.address);
+    });
+
+    it('returns undefined in legacy mode', () => {
+      const blockchain = new PrivaraBlockchain(createMockPrivara() as any, sessionKeyConfig);
+      expect(blockchain.getSignerAddress()).toBeUndefined();
     });
   });
 });

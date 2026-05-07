@@ -45,6 +45,10 @@ export class PrivaraBlockchain {
     return this.walletClient;
   }
 
+  getSignerAddress(): string | undefined {
+    return this.config.signer?.address;
+  }
+
   async sendInvoiceTransaction(invoice: CreateInvoiceZerodevResponse): Promise<Hex> {
     const calldata = encodeInvoiceCallData(invoice);
 
@@ -89,7 +93,9 @@ class BlockchainInvoices {
 
   async createAndSubmit(params: CreateInvoiceParams): Promise<CreateAndSubmitResult> {
     const privara = this.blockchain.privara;
-    const invoice = (await privara.invoices.create(params)) as unknown as CreateInvoiceZerodevResponse;
+    const signerAddress = this.blockchain.getSignerAddress();
+    const invoiceParams = signerAddress ? { ...params, signer_address: signerAddress } : params;
+    const invoice = (await privara.invoices.create(invoiceParams)) as unknown as CreateInvoiceZerodevResponse;
     const txHash = await this.blockchain.sendInvoiceTransaction(invoice);
 
     await privara.transactions.report({

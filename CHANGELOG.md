@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.1] - 2026-05-07
+
+### Added
+
+- In signer mode, `PrivaraBlockchain.invoices.createAndSubmit(...)` now forwards `signer_address` to the backend so the backend can use that address as the FHE sender (`msg.sender` expected by the contract). Required for the on-chain transaction to succeed with the backend-caller pattern.
+- `PrivaraBlockchain.getSignerAddress()` returns the configured signer's address (or `undefined` in legacy mode).
+
 ## [0.2.0] - 2026-05-07
 
 ### Added
@@ -39,6 +46,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Idempotency key support
 - Dual ESM/CJS build with TypeScript declarations
 
-[Unreleased]: https://github.com/PrivaraXYZ/privara-sdk/compare/v0.2.0...HEAD
+[Unreleased]: https://github.com/PrivaraXYZ/privara-sdk/compare/v0.2.1...HEAD
+[0.2.1]: https://github.com/PrivaraXYZ/privara-sdk/compare/v0.2.0...v0.2.1
 [0.2.0]: https://github.com/PrivaraXYZ/privara-sdk/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/PrivaraXYZ/privara-sdk/releases/tag/v0.1.0
