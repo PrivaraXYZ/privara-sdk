@@ -1,11 +1,14 @@
-import type { Hex } from 'viem';
+import type { Account, Hex } from 'viem';
 
 export interface BlockchainConfig {
-  serializedSessionKey: string;
-  zerodevProjectId?: string;
-  zerodevBundlerUrl?: string;
   rpcUrl?: string;
   chain?: 'arbitrum-sepolia';
+
+  serializedSessionKey?: string;
+  zerodevProjectId?: string;
+  zerodevBundlerUrl?: string;
+
+  signer?: Account;
 }
 
 export interface CreateAndSubmitResult {

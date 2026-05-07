@@ -20,6 +20,7 @@ export interface CreateInvoiceParams {
   wallet_id: string;
   provider_id?: 'CIRCLE';
   metadata?: string;
+  signer_address?: string;
 }
 
 export interface CreateInvoiceResponse {
