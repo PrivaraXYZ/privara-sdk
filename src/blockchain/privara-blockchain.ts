@@ -1,21 +1,33 @@
 import type { KernelAccountClient } from '@zerodev/sdk';
-import type { Hex } from 'viem';
+import type { Hex, WalletClient } from 'viem';
+import { arbitrumSepolia } from 'viem/chains';
 import type { Privara } from '../client.js';
 import type { CreateInvoiceParams, CreateInvoiceZerodevResponse } from '../types/invoices.js';
 import { encodeInvoiceCallData } from './calldata-encoder.js';
 import { createKernelClientFromSessionKey } from './kernel-client-factory.js';
 import type { BlockchainConfig, CreateAndSubmitResult } from './types.js';
+import { createWalletClientFromSigner } from './wallet-client-factory.js';
 
 export class PrivaraBlockchain {
   readonly privara: Privara;
   private readonly config: BlockchainConfig;
+  private readonly useSignerMode: boolean;
   private kernelClientPromise: Promise<KernelAccountClient> | null = null;
+  private walletClient: WalletClient | null = null;
 
   readonly invoices: BlockchainInvoices;
 
   constructor(privara: Privara, config: BlockchainConfig) {
+    if (config.signer && config.serializedSessionKey) {
+      throw new Error('BlockchainConfig: provide either `signer` or `serializedSessionKey`, not both');
+    }
+    if (!config.signer && !config.serializedSessionKey) {
+      throw new Error('BlockchainConfig: one of `signer` or `serializedSessionKey` is required');
+    }
+
     this.privara = privara;
     this.config = config;
+    this.useSignerMode = Boolean(config.signer);
     this.invoices = new BlockchainInvoices(this);
   }
 
@@ -26,10 +38,32 @@ export class PrivaraBlockchain {
     return this.kernelClientPromise;
   }
 
+  private getWalletClient(): WalletClient {
+    if (!this.walletClient) {
+      this.walletClient = createWalletClientFromSigner(this.config);
+    }
+    return this.walletClient;
+  }
+
   async sendInvoiceTransaction(invoice: CreateInvoiceZerodevResponse): Promise<Hex> {
-    const kernelClient = await this.getKernelClient();
     const calldata = encodeInvoiceCallData(invoice);
 
+    if (this.useSignerMode) {
+      const walletClient = this.getWalletClient();
+      const account = walletClient.account;
+      if (!account) {
+        throw new Error('Wallet client has no account');
+      }
+      return walletClient.sendTransaction({
+        account,
+        chain: arbitrumSepolia,
+        to: invoice.contract_address as Hex,
+        data: calldata,
+        value: 0n,
+      });
+    }
+
+    const kernelClient = await this.getKernelClient();
     const { account } = kernelClient;
     if (!account) {
       throw new Error('Kernel account not initialized');

@@ -1,6 +1,6 @@
 {
   "name": "@privara/sdk",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "TypeScript SDK for the Privara API",
   "type": "module",
   "main": "./dist/index.cjs",
@@ -47,6 +47,7 @@
     "format": "biome format --write",
     "playground": "node --env-file=playground/.env --import tsx playground/test-sdk.ts",
     "playground:blockchain": "node --env-file=playground/.env --import tsx playground/test-blockchain.ts",
+    "playground:signer": "node --env-file=playground/.env --import tsx playground/test-signer-mode.ts",
     "prepublishOnly": "pnpm build"
   },
   "peerDependencies": {

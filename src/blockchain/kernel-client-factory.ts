@@ -23,6 +23,10 @@ function buildBundlerUrl(projectId: string, chainId = ARBITRUM_SEPOLIA_CHAIN_ID)
 }
 
 export async function createKernelClientFromSessionKey(config: BlockchainConfig): Promise<KernelAccountClient> {
+  if (!config.serializedSessionKey) {
+    throw new Error('serializedSessionKey is required to create a kernel client');
+  }
+
   const chain = arbitrumSepolia;
   const rpcUrl = config.rpcUrl ?? DEFAULT_RPC_URL;
   const projectId = config.zerodevProjectId ?? DEFAULT_ZERODEV_PROJECT_ID;
