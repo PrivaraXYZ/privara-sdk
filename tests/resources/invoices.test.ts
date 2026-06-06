@@ -45,6 +45,29 @@ describe('Invoices resource', () => {
     expect(headers['X-Idempotency-Key']).toBeTruthy();
   });
 
+  // DEV-202: the SDK is a thin REST client with no crypto. Moving encryption
+  // into the backend Lambda (server-side endpoint A) must keep the create()
+  // path + request contract identical so SDK consumers need zero changes.
+  it('create() targets endpoint A (POST /api/v1/invoices) with the contract unchanged', async () => {
+    mockFetch({ public_id: 'inv_1', challenge_id: 'ch_1' });
+
+    const params = {
+      from: 'test@test.com',
+      due_date: '2025-12-31',
+      reference: 'Test',
+      amount: 100,
+      currency: { type: 'crypto', code: 'USDC' },
+      wallet_id: 'w_1',
+    } as const;
+
+    await privara.invoices.create(params);
+
+    const [url, init] = (globalThis.fetch as ReturnType<typeof vi.fn>).mock.calls[0];
+    expect(url).toBe('https://api.test.io/api/v1/invoices');
+    expect(init.method).toBe('POST');
+    expect(JSON.parse(init.body as string)).toEqual(params);
+  });
+
   it('gets an invoice without auth', async () => {
     mockFetch(mockInvoice);
     await privara.invoices.get('inv_1');
